@@ -15,5 +15,17 @@ namespace ET
         // 200001以上不抛异常
 
         public const int ERR_NetWorkError = 200002;//网络异常
+
+        public const int ERR_LoginInfoError = 200003;//登录信息错误
+
+        public const int ERR_AccountNameFormError = 200004;//登录账号格式错误
+        
+        public const int ERR_PasswordFormError = 200005;//登录密码格式错误
+        
+        public const int ERR_AccountInBlackListError = 200006;//账号处于黑名单中
+        
+        public const int ERR_LoginPasswordError = 200007;//登录密码错误
+        
+        public const int ERR_RequestRepeatdly = 200008;//重复请求
     }
 }

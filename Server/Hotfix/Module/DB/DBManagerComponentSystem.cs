@@ -22,7 +22,13 @@ namespace ET
                 DBManagerComponent.Instance = null;
             }
         }
-        
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="self"></param>
+        /// <param name="zone">区服，比如一区，2区</param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         public static DBComponent GetZoneDB(this DBManagerComponent self, int zone)
         {
             DBComponent dbComponent = self.DBComponents[zone];
