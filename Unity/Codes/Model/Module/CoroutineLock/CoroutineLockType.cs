@@ -17,8 +17,8 @@ namespace ET
         public const int LoginCenterLock = 10;//锁登录中心服账号
         
         public const int GateLoginLock = 11;//锁gate服务器登录账号
-        
-        
+
+        public const int CreateRole = 12;//创建角色
         
 
         public const int Max = 100; // 这个必须最大

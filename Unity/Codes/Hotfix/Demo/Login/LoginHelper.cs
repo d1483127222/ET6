@@ -4,6 +4,8 @@ using System;
 namespace ET
 {
     [FriendClassAttribute(typeof(ET.AccountInfoComponent))]
+    [FriendClassAttribute(typeof(ET.ServerInfosComponent))]
+    [FriendClassAttribute(typeof(ET.RoleInfosComponent))]
     public static class LoginHelper
     {
         public static async ETTask<int> Login(Scene zoneScene, string address, string account, string password)
@@ -30,46 +32,76 @@ namespace ET
 
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
             zoneScene.GetComponent<SessionComponent>().Session.AddComponent<PingComponent>();
-            
+
             zoneScene.GetComponent<AccountInfoComponent>().Token = a2CLoginAccount.Token;
             zoneScene.GetComponent<AccountInfoComponent>().AccountId = a2CLoginAccount.AccountId;
 
 
             return ErrorCode.ERR_Success;
 
-            // try
-            // {
-            //     // 创建一个ETModel层的Session
-            //     R2C_Login r2CLogin;
-            //     Session session = null;
-            //     try
-            //     {
-            //         session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
-            //         {
-            //             r2CLogin = (R2C_Login) await session.Call(new C2R_Login() { Account = account, Password = password });
-            //         }
-            //     }
-            //     finally
-            //     {
-            //         session?.Dispose();
-            //     }
-            //
-            //     // 创建一个gate Session,并且保存到SessionComponent中
-            //     Session gateSession = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(r2CLogin.Address));
-            //     gateSession.AddComponent<PingComponent>();
-            //     zoneScene.AddComponent<SessionComponent>().Session = gateSession;
-            //
-            //     G2C_LoginGate g2CLoginGate = (G2C_LoginGate)await gateSession.Call(
-            //         new C2G_LoginGate() { Key = r2CLogin.Key, GateId = r2CLogin.GateId});
-            //
-            //     Log.Debug("登陆gate成功!");
-            //
-            //     Game.EventSystem.PublishAsync(new EventType.LoginFinish() {ZoneScene = zoneScene}).Coroutine();
-            // }
-            // catch (Exception e)
-            // {
-            //     Log.Error(e);
-            // }
+        }
+
+        public static async ETTask<int> GetServerInfos(Scene zoneScene)
+        {
+            A2C_GetServerInfos a2CGetServerInfos = null;
+            try
+            {
+                a2CGetServerInfos = (A2C_GetServerInfos)await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2A_GetServerInfos()
+                {
+                    AccountId = zoneScene.GetComponent<AccountInfoComponent>().AccountId,
+                    Token = zoneScene.GetComponent<AccountInfoComponent>().Token
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+                return ErrorCode.ERR_NetWorkError;
+            }
+
+            foreach (var serverInfoProto in a2CGetServerInfos.ServerInfosList)
+            {
+                ServerInfo serverInfo = zoneScene.GetComponent<ServerInfosComponent>().AddChild<ServerInfo>();
+                serverInfo.FromMessage(serverInfoProto);
+                zoneScene.GetComponent<ServerInfosComponent>().Add(serverInfo);
+            }
+
+            await ETTask.CompletedTask;
+            return ErrorCode.ERR_Success;
+        }
+
+        public static async ETTask<int> CreateRole(Scene zoneScene, string name)
+        {
+            A2C_CreateRole a2CCreateRole = null;
+
+            try
+            {
+                a2CCreateRole = (A2C_CreateRole)await zoneScene.GetComponent<SessionComponent>().Session.Call(new C2A_CreateRole()
+                {
+                    AccountId = zoneScene.GetComponent<AccountInfoComponent>().AccountId,
+                    Token = zoneScene.GetComponent<AccountInfoComponent>().Token,
+                    Name = name,
+                    ServerId = zoneScene.GetComponent<ServerInfosComponent>().CurrentServerId,
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.ToString());
+                return ErrorCode.ERR_NetWorkError;
+            }
+
+            if (a2CCreateRole.Error != ErrorCode.ERR_Success)
+            {
+                Log.Error(a2CCreateRole.Error.ToString());
+                return a2CCreateRole.Error;
+            }
+
+            RoleInfo newRoleInfo = zoneScene.GetComponent<RoleInfosComponent>().AddChild<RoleInfo>();
+            newRoleInfo.FromMessage(a2CCreateRole.RoleInfo);
+
+            zoneScene.GetComponent<RoleInfosComponent>().RoleInfos.Add(newRoleInfo);
+
+            await ETTask.CompletedTask;
+            return ErrorCode.ERR_Success;
         }
     }
 }

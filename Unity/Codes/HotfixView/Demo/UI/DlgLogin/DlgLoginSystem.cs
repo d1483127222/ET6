@@ -35,6 +35,13 @@ namespace ET
 					return;
 				}
 				//TODD 显示登录之后的页面逻辑
+
+				errerCode = await LoginHelper.GetServerInfos(self.ZoneScene());
+				if (errerCode != ErrorCode.ERR_Success)
+				{
+					Log.Error(errerCode.ToString());
+					return;
+				}
 				
 				self.DomainScene().GetComponent<UIComponent>().HideWindow(WindowID.WindowID_Login);
 				self.DomainScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Lobby);

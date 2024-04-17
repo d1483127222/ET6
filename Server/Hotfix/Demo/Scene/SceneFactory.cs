@@ -41,6 +41,7 @@ namespace ET
                     //scene.AddComponent<DBManagerComponent>();
                     scene.AddComponent<TokenComponent>();
                     scene.AddComponent<AccountSessionsComponent>();
+                    scene.AddComponent<ServerInfoMangerComponent>();
                     break;
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();
