@@ -3,7 +3,7 @@
 namespace ET
 {
     [Timer(TimerType.AccountSessionCheckOutTime)]
-    public class AccountSessionCheckOutTimer : ATimer<AccountCheckOutTimeComponent>
+    public class  AccountSessionCheckOutTimer : ATimer<AccountCheckOutTimeComponent>
     {
         public override void Run(AccountCheckOutTimeComponent self)
         {
@@ -18,7 +18,7 @@ namespace ET
         }
     }
 
-    public class AccountCheckOutTimeComponentAwakeSystem: AwakeSystem<AccountCheckOutTimeComponent, long>
+    public class AccountCheckOutTimeComponentAwakeSystem: AwakeSystem<AccountCheckOutTimeComponent,long>
     {
         public override void Awake(AccountCheckOutTimeComponent self, long accountId)
         {
@@ -36,22 +36,22 @@ namespace ET
             TimerComponent.Instance.Remove(ref self.Timer);
         }
     }
-
-    [FriendClassAttribute(typeof(ET.AccountCheckOutTimeComponent))]
+    [FriendClass(typeof(AccountCheckOutTimeComponent))]
     public static class AccountCheckOutTimeComponentSystem
     {
+
         public static void DeleteSession(this AccountCheckOutTimeComponent self)
         {
             Session session = self.GetParent<Session>();
+
             long sessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(self.AccountId);
             if (session.InstanceId == sessionInstanceId)
             {
-                session?.DomainScene().GetComponent<AccountSessionsComponent>().Remove(self.AccountId);
-                
-                
+                session.DomainScene().GetComponent<AccountSessionsComponent>().Remove(self.AccountId);
             }
             session?.Send(new A2C_Disconnect(){Error = 1});
             session?.Disconnect().Coroutine();
         }
+
     }
 }

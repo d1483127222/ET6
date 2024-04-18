@@ -1,5 +1,7 @@
 ﻿namespace ET
 {
+    
+    
     public class LoginInfoRecordComponentDestroySystem : DestroySystem<LoginInfoRecordComponent>
     {
         public override void Destroy(LoginInfoRecordComponent self)
@@ -7,7 +9,8 @@
             self.AccountLoginInfoDict.Clear();
         }
     }
-    [FriendClassAttribute(typeof(ET.LoginInfoRecordComponent))]
+
+    [FriendClass(typeof(LoginInfoRecordComponent))]
     public static class LoginInfoRecordComponentSystem
     {
         public static void Add(this LoginInfoRecordComponent self, long key, int value)
@@ -17,7 +20,7 @@
                 self.AccountLoginInfoDict[key] = value;
                 return;
             }
-            self.AccountLoginInfoDict.Add(key, value);
+            self.AccountLoginInfoDict.Add(key,value);
         }
 
         public static void Remove(this LoginInfoRecordComponent self, long key)
@@ -30,16 +33,15 @@
 
         public static int Get(this LoginInfoRecordComponent self, long key)
         {
-            if (!self.AccountLoginInfoDict.TryGetValue(key, out int value))
+            if (!self.AccountLoginInfoDict.TryGetValue(key,out int value))
             {
                 return -1;
-
             }
-
+            
             return value;
         }
 
-        public static bool IsExit(this LoginInfoRecordComponent self, long key)
+        public static bool IsExist(this LoginInfoRecordComponent self, long key)
         {
             return self.AccountLoginInfoDict.ContainsKey(key);
         }

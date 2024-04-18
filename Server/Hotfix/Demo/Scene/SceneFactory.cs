@@ -23,6 +23,7 @@ namespace ET
             {
                 case SceneType.Realm:
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
+                    scene.AddComponent<TokenComponent>();
                     break;
                 case SceneType.Gate:
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
@@ -32,16 +33,16 @@ namespace ET
                 case SceneType.Map:
                     scene.AddComponent<UnitComponent>();
                     scene.AddComponent<AOIManagerComponent>();
+                  
                     break;
                 case SceneType.Location:
                     scene.AddComponent<LocationComponent>();
                     break;
                 case SceneType.Account:
                     scene.AddComponent<NetKcpComponent, IPEndPoint, int>(startSceneConfig.OuterIPPort, SessionStreamDispatcherType.SessionStreamDispatcherServerOuter);
-                    //scene.AddComponent<DBManagerComponent>();
                     scene.AddComponent<TokenComponent>();
                     scene.AddComponent<AccountSessionsComponent>();
-                    scene.AddComponent<ServerInfoMangerComponent>();
+                    scene.AddComponent<ServerInfoManagerComponent>();
                     break;
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();

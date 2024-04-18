@@ -6,6 +6,5 @@
         public long Timer = 0;
 
         public long AccountId = 0;
-
     }
 }

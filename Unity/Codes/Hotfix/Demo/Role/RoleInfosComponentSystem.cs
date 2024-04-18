@@ -1,20 +1,22 @@
 ﻿namespace ET
 {
-    public class RoleInfosComponentDestroySystem : DestroySystem<RoleInfosComponent>
+
+    public class RoleInfosComponentDestroySystem: DestroySystem<RoleInfosComponent>
     {
         public override void Destroy(RoleInfosComponent self)
         {
-            foreach (var roleinfo in self.RoleInfos)
+            foreach (var roleInfo in self.RoleInfos)
             {
-                roleinfo?.Dispose();
+                roleInfo?.Dispose();
             }
             self.RoleInfos.Clear();
-            self.currentRoleId = 0;
+            self.CurrentRoleId = 0;
         }
     }
 
     public static class RoleInfosComponentSystem
     {
+        
         
     }
 }

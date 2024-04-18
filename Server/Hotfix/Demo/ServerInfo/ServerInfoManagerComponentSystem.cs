@@ -1,16 +1,17 @@
 ﻿namespace ET
 {
-    public class ServerInfoManagerComponentAwakeSystem : AwakeSystem<ServerInfoMangerComponent>
+    
+    public class ServerInfoManagerComponentAwakeSystem : AwakeSystem<ServerInfoManagerComponent>
     {
-        public override void Awake(ServerInfoMangerComponent self)
+        public override void Awake(ServerInfoManagerComponent self)
         {
             self.Awake().Coroutine();
         }
     }
     
-    public class ServerInfoManagerComponentDestroySystem : DestroySystem<ServerInfoMangerComponent>
+    public class ServerInfoManagerComponentDestroySystem : DestroySystem<ServerInfoManagerComponent>
     {
-        public override void Destroy(ServerInfoMangerComponent self)
+        public override void Destroy(ServerInfoManagerComponent self)
         {
             foreach (var serverInfo in self.ServerInfos)
             {
@@ -20,28 +21,28 @@
         }
     }
     
-    public class ServerInfoManagerComponentLoadSystem : LoadSystem<ServerInfoMangerComponent>
+    public class ServerInfoManagerComponentLoadSystem : LoadSystem<ServerInfoManagerComponent>
     {
-        public override void Load(ServerInfoMangerComponent self)
+        public override void Load(ServerInfoManagerComponent self)
         {
             self.Awake().Coroutine();
         }
     }
-    [FriendClassAttribute(typeof(ET.ServerInfoMangerComponent))]
-    [FriendClassAttribute(typeof(ET.ServerInfo))]
+
+    [FriendClass(typeof(ServerInfo))]
+    [FriendClass(typeof(ServerInfoManagerComponent))]
     public static class ServerInfoManagerComponentSystem
     {
-        public static async ETTask Awake(this ServerInfoMangerComponent self)
+        public static async ETTask Awake(this ServerInfoManagerComponent self)
         {
             var serverInfoList = await DBManagerComponent.Instance.GetZoneDB(self.DomainZone()).Query<ServerInfo>(d => true);
+
             if (serverInfoList == null || serverInfoList.Count <= 0)
             {
-                Log.Error("ServerInfo count is zero");
-
-
-
+                Log.Error("serverInfo  count is zero");
                 self.ServerInfos.Clear();
                 var serverInfoConfigs = ServerInfoConfigCategory.Instance.GetAll();
+
                 foreach (var info in serverInfoConfigs.Values)
                 {
                     ServerInfo newServerInfo = self.AddChildWithId<ServerInfo>(info.Id);
@@ -54,14 +55,15 @@
                 return;
             }
             self.ServerInfos.Clear();
+
             foreach (var serverInfo in serverInfoList)
             {
                 self.AddChild(serverInfo);
                 self.ServerInfos.Add(serverInfo);
             }
-
+            
             await ETTask.CompletedTask;
         }
-
+        
     }
 }

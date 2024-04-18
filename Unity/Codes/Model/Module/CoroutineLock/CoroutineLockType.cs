@@ -10,16 +10,18 @@ namespace ET
         public const int DB = 5;
         public const int Resources = 6;
         public const int ResourcesLoader = 7;
-        public const int LoadUIBaseWindows = 8;
 
-        public const int LoginAccount = 9;//锁登录账号
+        public const int LoginAccount = 8;
+        public const int LoginCenterLock = 9;
+        public const int GateLoginLock = 10;
 
-        public const int LoginCenterLock = 10;//锁登录中心服账号
-        
-        public const int GateLoginLock = 11;//锁gate服务器登录账号
+        public const int CreateRole = 11;
 
-        public const int CreateRole = 12;//创建角色
-        
+        public const int LoginRealm = 12;
+
+        public const int LoginGate = 13;
+
+        public const int UnitCacheGet = 14;
 
         public const int Max = 100; // 这个必须最大
     }

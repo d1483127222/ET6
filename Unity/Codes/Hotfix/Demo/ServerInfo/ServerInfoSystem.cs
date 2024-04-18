@@ -1,6 +1,6 @@
 ﻿namespace ET
 {
-    [FriendClassAttribute(typeof(ET.ServerInfo))]
+    [FriendClass(typeof(ServerInfo))]
     public static class ServerInfoSystem
     {
         public static void FromMessage(this ServerInfo self, ServerInfoProto serverInfoProto)
@@ -14,5 +14,6 @@
         {
             return new ServerInfoProto() { Id = (int)self.Id, ServerName = self.ServerName, Status = self.Status };
         }
+        
     }
 }

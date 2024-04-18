@@ -2,11 +2,11 @@
 
 namespace ET
 {
-    [ChildType(typeof(RoleInfo))]
     [ComponentOf(typeof(Scene))]
-    public class RoleInfosComponent : Entity,IAwake,IDestroy
+    [ChildType(typeof(RoleInfo))]
+    public class RoleInfosComponent : Entity ,IAwake,IDestroy
     {
         public List<RoleInfo> RoleInfos = new List<RoleInfo>();
-        public long currentRoleId = 0;
+        public long CurrentRoleId = 0;
     }
 }
