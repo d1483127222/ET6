@@ -17,7 +17,7 @@
 
 		public Session ClientSession { get; set; }
 
-
+		public long ChatInfoInstanceId { get; set; }
 
 	}
 }

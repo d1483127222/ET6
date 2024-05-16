@@ -21,6 +21,7 @@
             {
                 self.AccountId = 0;
                 self.UnitId    = 0;
+                self.ChatInfoInstanceId = 0;
                 self.PlayerState = PlayerState.Disconnect;
                 self.ClientSession?.Dispose();
             }

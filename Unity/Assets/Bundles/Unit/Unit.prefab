@@ -44,6 +44,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-  - key: Skeleton
-    gameObject: {fileID: 1248987324363926, guid: 9e27b0bdab1ad7242a009899d15c0e67,
+  - key: Knight
+    gameObject: {fileID: 7865589332997018159, guid: 16272105b19fed64086f98efff1d700c,
       type: 3}

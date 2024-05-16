@@ -47,6 +47,16 @@ namespace ET
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();
                     break;
+                case SceneType.UnitCache:
+                    scene.AddComponent<UnitCacheComponent>();
+                    break;
+                case SceneType.Rank:
+                    await scene.AddComponent<RankInfosComponent>().LoadRankInfo();
+                    break;
+                case SceneType.ChatInfo:
+                    scene.AddComponent<ChatInfoUnitsComponent>();
+                    break;
+                
             }
 
             return scene;

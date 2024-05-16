@@ -70,5 +70,35 @@ namespace ET
             removeUnits.Units.Add(sendUnit.Id);
             MessageHelper.SendToClient(unit, removeUnits);
         }
+        
+        
+        public static async ETTask<(bool, Unit)> LoadUnit(Player player)
+        {
+            GateMapComponent gateMapComponent = player.AddComponent<GateMapComponent>();
+            gateMapComponent.Scene            = await SceneFactory.Create(gateMapComponent, "GateMap", SceneType.Map);
+            
+            Unit unit = await UnitCacheHelper.GetUnitCache(gateMapComponent.Scene, player.UnitId);
+            
+            bool isNewUnit = unit == null;
+             if (isNewUnit)
+            {
+                unit =  UnitFactory.Create(gateMapComponent.Scene, player.UnitId, UnitType.Player);
+                
+                var roleInfos = await DBManagerComponent.Instance.GetZoneDB(player.DomainZone()).Query<RoleInfo>(d => d.Id == player.UnitId);
+                unit.AddComponent(roleInfos[0]);
+                
+                UnitCacheHelper.AddOrUpdateUnitAllCache(unit);
+            }
+            
+            return (isNewUnit, unit);
+        }
+        
+        public static async ETTask InitUnit(Unit unit, bool isNew)
+        {
+            unit.GetComponent<NumericComponent>().SetNoEvent(NumericType.BattleRandomSeed,TimeHelper.ServerNow());
+            await ETTask.CompletedTask;
+        }
+
+        
     }
 }

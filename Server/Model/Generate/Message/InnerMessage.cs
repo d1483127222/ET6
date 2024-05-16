@@ -555,4 +555,148 @@ namespace ET
 
 	}
 
+//----------玩家缓存相关----------------
+//增加或者更新Unit缓存
+	[ResponseType(nameof(UnitCache2Other_AddOrUpdateUnit))]
+	[Message(InnerOpcode.Other2UnitCache_AddOrUpdateUnit)]
+	[ProtoContract]
+	public partial class Other2UnitCache_AddOrUpdateUnit: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public List<string> EntityTypes = new List<string>();
+
+		[ProtoMember(3)]
+		public List<byte[]> EntityBytes = new List<byte[]>();
+
+	}
+
+	[Message(InnerOpcode.UnitCache2Other_AddOrUpdateUnit)]
+	[ProtoContract]
+	public partial class UnitCache2Other_AddOrUpdateUnit: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+//获取Unit缓存
+	[ResponseType(nameof(UnitCache2Other_GetUnit))]
+	[Message(InnerOpcode.Other2UnitCache_GetUnit)]
+	[ProtoContract]
+	public partial class Other2UnitCache_GetUnit: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(2)]
+		public List<string> ComponentNameList = new List<string>();
+
+	}
+
+//删除Unit缓存
+	[ResponseType(nameof(UnitCache2Other_DeleteUnit))]
+	[Message(InnerOpcode.Other2UnitCache_DeleteUnit)]
+	[ProtoContract]
+	public partial class Other2UnitCache_DeleteUnit: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public long UnitId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.UnitCache2Other_DeleteUnit)]
+	[ProtoContract]
+	public partial class UnitCache2Other_DeleteUnit: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
+	[ResponseType(nameof(Chat2G_EnterChat))]
+	[Message(InnerOpcode.G2Chat_EnterChat)]
+	[ProtoContract]
+	public partial class G2Chat_EnterChat: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(1)]
+		public string Name { get; set; }
+
+		[ProtoMember(2)]
+		public long UnitId { get; set; }
+
+		[ProtoMember(3)]
+		public long GateSessionActorId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.Chat2G_EnterChat)]
+	[ProtoContract]
+	public partial class Chat2G_EnterChat: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+		[ProtoMember(1)]
+		public long ChatInfoUnitInstanceId { get; set; }
+
+	}
+
+	[ResponseType(nameof(Chat2G_RequestExitChat))]
+	[Message(InnerOpcode.G2Chat_RequestExitChat)]
+	[ProtoContract]
+	public partial class G2Chat_RequestExitChat: Object, IActorRequest
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(InnerOpcode.Chat2G_RequestExitChat)]
+	[ProtoContract]
+	public partial class Chat2G_RequestExitChat: Object, IActorResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 }

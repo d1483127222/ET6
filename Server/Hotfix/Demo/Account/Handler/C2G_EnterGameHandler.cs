@@ -2,9 +2,10 @@
 
 namespace ET
 {
-    [FriendClassAttribute(typeof(ET.SessionStateComponent))]
-    [FriendClassAttribute(typeof(ET.GateMapComponent))]
-    [FriendClassAttribute(typeof(ET.SessionPlayerComponent))]
+    [FriendClass(typeof(SessionStateComponent))]
+    [FriendClass(typeof(SessionPlayerComponent))]
+    [FriendClassAttribute(typeof(ET.RoleInfo))]
+    [FriendClassAttribute(typeof(ET.UnitGateComponent))]
     public class C2G_EnterGameHandler : AMRpcHandler<C2G_EnterGame, G2C_EnterGame>
     {
         protected override async ETTask Run(Session session, C2G_EnterGame request, G2C_EnterGame response, Action reply)
@@ -93,22 +94,26 @@ namespace ET
                     try
                     {
 
-                        GateMapComponent gateMapComponent = player.AddComponent<GateMapComponent>();
-                        gateMapComponent.Scene = await SceneFactory.Create(gateMapComponent, "GateMap", SceneType.Map);
+                        //GateMapComponent gateMapComponent = player.AddComponent<GateMapComponent>();
+                        //gateMapComponent.Scene = await SceneFactory.Create(gateMapComponent, "GateMap", SceneType.Map);
 
-                        Unit unit = UnitFactory.Create(gateMapComponent.Scene, player.Id, UnitType.Player);
-                        unit.AddComponent<UnitGateComponent, long>(session.InstanceId);
-                        long unitId = unit.Id;
+                        //从数据库或者缓存中加载出Unit实体及其相关组件
+                        (bool isNewPlayer, Unit unit) = await UnitHelper.LoadUnit(player);
 
+                        //unit.AddComponent<UnitGateComponent, long>(session.InstanceId);
+                        unit.AddComponent<UnitGateComponent, long>(player.InstanceId);
 
-                        StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Map1");
+                        player.ChatInfoInstanceId = await this.EnterWorldChatServer(unit); //登录聊天服
+
+                        //玩家Unit上线后的初始化操作
+                        await UnitHelper.InitUnit(unit, isNewPlayer);
+                        response.MyId = unit.Id;
+                        reply();
+
+                        StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(session.DomainZone(), "Game");
                         await TransferHelper.Transfer(unit, startSceneConfig.InstanceId, startSceneConfig.Name);
 
 
-                        player.UnitId = unitId;
-                        response.MyId = unitId;
-
-                        reply();
 
                         SessionStateComponent SessionStateComponent = session.GetComponent<SessionStateComponent>();
                         if (SessionStateComponent == null)
@@ -131,7 +136,19 @@ namespace ET
                     }
                 }
             }
+        }
+        
+        private async ETTask<long> EnterWorldChatServer(Unit unit)
+        {
+            StartSceneConfig startSceneConfig = StartSceneConfigCategory.Instance.GetBySceneName(unit.DomainZone(), "ChatInfo");
+            Chat2G_EnterChat chat2GEnterChat = (Chat2G_EnterChat)await MessageHelper.CallActor(startSceneConfig.InstanceId, new G2Chat_EnterChat()
+            {
+                UnitId           = unit.Id,
+                Name             = unit.GetComponent<RoleInfo>().Name,
+                GateSessionActorId = unit.GetComponent<UnitGateComponent>().GateSessionActorId
+            });
 
+            return chat2GEnterChat.ChatInfoUnitInstanceId;
         }
     }
 }

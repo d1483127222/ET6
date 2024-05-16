@@ -22,3 +22,20 @@ message M2M_UnitTransferRequest // IActorRequest
 
 
 
+
+message UnitCache2Other_GetUnit //IActorResponse
+{
+	int32 RpcId = 90;
+	int32 Error = 91;
+	string Message = 92;
+
+	repeated Entity EntityList = 4;
+	repeated string ComponentNameList = 5;
+}
+
+
+message Map2Rank_AddOrUpdateRankInfo //IActorMessage
+{
+	int32 RpcId = 90;
+	RankInfo RankInfo = 1;
+}

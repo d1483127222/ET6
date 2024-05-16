@@ -62,6 +62,12 @@ namespace ET
 			public AOIEntity B;
 		}
 
+		public struct ChangeEquipItem
+		{
+			public Unit Unit;
+			public Item Item;
+			public EquipOp EquipOp;
+		}
 		
 		public struct MakeProdutionOver
 		{

@@ -140,15 +140,54 @@ namespace ET
             public Unit WinUnit;
         }
         
+        public struct AdventureBattleReport
+        {
+            public Scene ZoneScene;
+            public BattleRoundResult BattleRoundResult;
+            public int Round;
+        }
+        
+        public struct AdventureRoundReset
+        {
+            public Scene ZoneScene;
+        }
+        
+        public struct ShowDamageValueView
+        {
+            public Scene ZoneScene;
+            public Unit TargetUnit;
+            public long DamamgeValue;
+        }
+        
+        public class ShowAdventureHpBar : DisposeObject
+        {
+            public static readonly ShowAdventureHpBar Instance = new ShowAdventureHpBar();
+            public Unit Unit;
+            public bool isShow;
+            
+            public override void Dispose()
+            {
+                this.Unit = null;
+            }
+        }
+        
+        
         public struct ExpChange
         {
             public Scene ZoneScene;
             public bool isEnoughUpLevel;
         }
         
-        public struct MakeQueueOver
+        public class MakeQueueOver : DisposeObject
         {
+            public static readonly MakeQueueOver Instance = new MakeQueueOver();
+
             public Scene ZoneScene;
+            
+            public override void Dispose()
+            {
+                this.ZoneScene = null;
+            }
         }
         
         public struct UpdateTaskInfo
