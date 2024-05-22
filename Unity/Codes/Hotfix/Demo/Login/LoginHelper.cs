@@ -310,6 +310,37 @@ namespace ET
             
             return ErrorCode.ERR_Success;
         }
+       /// <summary>
+       /// 热更新服务器
+       /// </summary>
+       /// <param name="zoneScene"></param>
+       /// <returns></returns>
+        public static async ETTask<int> RefeshServer(Scene zoneScene)
+        {
+            
+            string realmAddress = zoneScene.GetComponent<AccountInfoComponent>().RealmAddress;
+            // 1. 连接Realm，获取分配的Gate
+            R2C_ReloadDll r2CLogin;
+
+            Session session = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(realmAddress));
+            try
+            {
+                
+                r2CLogin = (R2C_ReloadDll) await session.Call(new C2R_ReloadDll() 
+                {  
+                });
+            }
+            catch (Exception e)
+            {
+                Log.Error(e);
+                session?.Dispose();
+                return ErrorCode.ERR_NetWorkError;
+            }
+            session?.Dispose();
+            
+            
+            return ErrorCode.ERR_Success;
+        }
         
     }
 }

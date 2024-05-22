@@ -92,5 +92,7 @@ namespace ET
 		 public const ushort C2Chat_SendChatInfo = 10089;
 		 public const ushort Chat2C_SendChatInfo = 10090;
 		 public const ushort Chat2C_NoticeChatInfo = 10091;
+		 public const ushort C2R_ReloadDll = 10092;
+		 public const ushort R2C_ReloadDll = 10093;
 	}
 }

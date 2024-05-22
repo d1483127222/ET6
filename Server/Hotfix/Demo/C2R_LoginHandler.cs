@@ -12,7 +12,7 @@ namespace ET
 			// 随机分配一个Gate
 			StartSceneConfig config = RealmGateAddressHelper.GetGate(session.DomainZone(),1);
 			Log.Debug($"gate address: {MongoHelper.ToJson(config)}");
-			
+			Log.Warning("Reload Success!!!!!!");
 			// 向gate请求一个key,客户端可以拿着这个key连接gate
 			G2R_GetLoginKey g2RGetLoginKey = (G2R_GetLoginKey) await ActorMessageSenderComponent.Instance.Call(
 				config.InstanceId, new R2G_GetLoginKey() {Account = request.Account});

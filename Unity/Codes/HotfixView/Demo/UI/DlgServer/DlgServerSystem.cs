@@ -15,6 +15,9 @@ namespace ET
 		public static void RegisterUIEvent(this DlgServer self)
 		{
 			self.View.E_ConfirmButton.AddListenerAsync(() => { return self.OnConfirmClickHandler();});
+			self.View.E_RefeshServerHotfixButton.AddListenerAsync(() => { return self.OnRefeshServerClickHandler();});
+			
+			
 		   self.View.E_ServerListLoopVerticalScrollRect.AddItemRefreshListener((Transform transform, int index) => { self.OnScrollItemRefreshHandler(transform, index); });
 		}
 
@@ -48,6 +51,34 @@ namespace ET
 		}
 		
 		public static async ETTask OnConfirmClickHandler(this DlgServer self)
+		{
+			bool isSelect = self.ZoneScene().GetComponent<ServerInfosComponent>().CurrentServerId != 0;
+
+			if (!isSelect)
+			{
+				Log.Error("请先选择区服");
+				return;
+			}
+
+			try
+			{
+				int errorCode = await LoginHelper.GetRoles(self.ZoneScene());
+				if (errorCode != ErrorCode.ERR_Success)
+				{
+					Log.Error(errorCode.ToString());
+					return;
+				}
+				
+				self.ZoneScene().GetComponent<UIComponent>().ShowWindow(WindowID.WindowID_Roles);
+				self.ZoneScene().GetComponent<UIComponent>().CloseWindow(WindowID.WindowID_Server);
+			}
+			catch (Exception e)
+			{
+				Log.Error(e.ToString());
+			}
+		}
+		
+		public static async ETTask OnRefeshServerClickHandler(this DlgServer self)
 		{
 			bool isSelect = self.ZoneScene().GetComponent<ServerInfosComponent>().CurrentServerId != 0;
 

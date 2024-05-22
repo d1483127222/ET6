@@ -1434,4 +1434,29 @@ namespace ET
 
 	}
 
+	[ResponseType(nameof(R2C_ReloadDll))]
+	[Message(OuterOpcode.C2R_ReloadDll)]
+	[ProtoContract]
+	public partial class C2R_ReloadDll: Object, IRequest
+	{
+		[ProtoMember(1)]
+		public int RpcId { get; set; }
+
+	}
+
+	[Message(OuterOpcode.R2C_ReloadDll)]
+	[ProtoContract]
+	public partial class R2C_ReloadDll: Object, IResponse
+	{
+		[ProtoMember(90)]
+		public int RpcId { get; set; }
+
+		[ProtoMember(91)]
+		public int Error { get; set; }
+
+		[ProtoMember(92)]
+		public string Message { get; set; }
+
+	}
+
 }

@@ -14,6 +14,9 @@ namespace ET
                     contex.Parent.RemoveComponent<ModeContex>();
                     Log.Console("C must have config name, like: C UnitConfig");
                     break;
+                case "C All":
+                    ConfigComponent.Instance.Load();
+                    break;
                 default:
                     string[] ss = content.Split(" ");
                     string configName = ss[1];
@@ -24,8 +27,10 @@ namespace ET
                         Log.Console($"reload config but not find {category}");
                         return;
                     }
+                    Log.Console(UnitConfigCategory.Instance.Get(1001).Name);
                     ConfigComponent.Instance.LoadOneConfig(type);
                     Log.Console($"reload config {configName} finish!");
+                    Log.Console(UnitConfigCategory.Instance.Get(1001).Name);
                     break;
             }
             

@@ -746,3 +746,17 @@ message Chat2C_NoticeChatInfo // IActorMessage
 	string Name = 1;
 	string ChatMessage = 2;
 }
+
+//ResponseType R2C_ReloadDll
+message C2R_ReloadDll // IRequest
+{
+	int32 RpcId = 1;
+}
+
+message R2C_ReloadDll // IResponse
+{
+	int32 RpcId    = 90;
+	int32 Error    = 91;
+	string Message = 92;
+}
+
