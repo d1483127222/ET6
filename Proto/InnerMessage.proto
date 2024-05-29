@@ -1,6 +1,8 @@
 syntax = "proto3";
 package ET;
 
+//本文件为服务器之间的通信
+
 //ResponseType ObjectQueryResponse
 message ObjectQueryRequest // IActorRequest
 {
@@ -39,7 +41,7 @@ message G2G_LockResponse // IActorResponse
 
 //ResponseType G2G_LockReleaseResponse
 message G2G_LockReleaseRequest // IActorRequest
-{
+{ 
 	int32 RpcId = 90;
 	int64 Id = 1;
 	string Address = 2;
@@ -151,13 +153,13 @@ message M2M_UnitTransferResponse // IActorResponse
 }
 
 message G2M_SessionDisconnect // IActorLocationMessage
-{
+{ 
 	int32 RpcId = 90;
 }
 
 //ResponseType L2A_LoginAccountResponse
 message A2L_LoginAccountRequest // IActorRequest
-{
+{ // 账号服务器向登录中心服，请求是否有已经登录的账号信息
 	int32 RpcId = 90;
 	int64 AccountId = 1;
 }
@@ -172,7 +174,7 @@ message L2A_LoginAccountResponse // IActorResponse
 
 //ResponseType G2L_DisconnectGateUnit
 message L2G_DisconnectGateUnit // IActorRequest
-{
+{ // 登录中心服发送给网关gate服务器，踢人消息
 	int32 RpcId = 90;
 	int64 AccountId = 1;
 }

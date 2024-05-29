@@ -113,6 +113,7 @@ namespace ET
                         return;
                     }
                     
+                    //踢人下线
                     long accountSessionInstanceId = session.DomainScene().GetComponent<AccountSessionsComponent>().Get(account.Id);
                     Session otherSession   = Game.EventSystem.Get(accountSessionInstanceId) as Session;
                     otherSession?.Send(new A2C_Disconnect(){Error = 0});

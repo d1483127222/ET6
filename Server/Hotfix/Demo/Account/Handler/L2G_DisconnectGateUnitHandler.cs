@@ -21,7 +21,9 @@ namespace ET
                 }
 
                 scene.GetComponent<GateSessionKeyComponent>().Remove(accountId);
+                
                 Session gateSession = player.ClientSession; 
+                
                 if ( gateSession!= null && !gateSession.IsDisposed)
                 {
                     if (gateSession.GetComponent<SessionPlayerComponent>() != null)

@@ -19,8 +19,10 @@ namespace ET
 
             try
             {
+                //创建登录账号的链接
                 accountSession  = zoneScene.GetComponent<NetKcpComponent>().Create(NetworkHelper.ToIPEndPoint(address));
                 password        = MD5Helper.StringMD5(password);
+                //有链接后开始发消息请求
                 a2CLoginAccount = (A2C_LoginAccount) await accountSession.Call(new C2A_LoginAccount() { AccountName = account, Password = password });
             }
             catch (Exception e)
@@ -35,7 +37,7 @@ namespace ET
                 accountSession?.Dispose();
                 return a2CLoginAccount.Error;
             }
-
+            //保存账号登录成功的session
             zoneScene.AddComponent<SessionComponent>().Session = accountSession;
             zoneScene.GetComponent<SessionComponent>().Session.AddComponent<PingComponent>();
             

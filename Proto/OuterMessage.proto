@@ -1,9 +1,11 @@
 syntax = "proto3";
 package ET;
 
+//本文件为服务器对外（客户端）消息
+
 //ResponseType M2C_TestResponse
 message C2M_TestRequest // IActorLocationRequest
-{
+{ //从游戏客户端经gate网关服务器，转发到map游戏服务器的unit对象
 	int32 RpcId = 90;
 	string request = 1;
 }
@@ -80,7 +82,7 @@ message M2C_CreateUnits // IActorMessage
 }
 
 message M2C_CreateMyUnit // IActorMessage
-{
+{ //从actor回复到客户端，不需要有回复消息，不经过location，所以不需要rpcid
 	UnitInfo Unit = 1;
 }
 
@@ -154,7 +156,7 @@ message G2C_Ping // IResponse
 
 
 message G2C_Test // IMessage
-{
+{ // 
 }
 
 //ResponseType M2C_Reload
@@ -241,7 +243,7 @@ message M2C_TransferMap // IActorLocationResponse
  
 //ResponseType A2C_LoginAccount
 message C2A_LoginAccount // IRequest
-{
+{ //直连
 	int32 RpcId = 90;
 	string AccountName = 1;
 	string Password    = 2;
@@ -253,8 +255,8 @@ message A2C_LoginAccount // IResponse
 	int32 RpcId = 90;
 	int32 Error = 91;
 	string Message = 92;
-	string Token   = 1;
-	int64  AccountId = 2;
+	string Token   = 1;//相当于令牌，验证码
+	int64  AccountId = 2;//相当于身份证号
 }
 
 

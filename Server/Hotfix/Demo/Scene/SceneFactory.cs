@@ -47,6 +47,7 @@ namespace ET
                 case SceneType.LoginCenter:
                     scene.AddComponent<LoginInfoRecordComponent>();
                     break;
+                //缓存服
                 case SceneType.UnitCache:
                     scene.AddComponent<UnitCacheComponent>();
                     break;
